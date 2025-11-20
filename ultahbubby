@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Happy 18th Birthday Bubby!</title>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600&display=swap');
+
+body {
+    background: linear-gradient(180deg, #ffe6f2, #ffd1ec);
+    font-family: 'Fredoka', sans-serif;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+.card {
+    background: white;
+    padding: 50px;
+    border-radius: 30px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    max-width: 520px;
+    width: 90%;
+    position: relative;
+    z-index: 10;
+    animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+    color: #ff4d88;
+    font-size: 3em;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(255,100,150,0.3);
+}
+
+p.intro {
+    color: #555;
+    font-size: 1.3em;
+}
+
+.btn {
+    padding: 15px 35px;
+    font-size: 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin: 10px;
+    font-weight: bold;
+}
+
+#btn-gift {
+    background-color: #ff4d88;
+    color: white;
+    position: relative;
+    box-shadow: 0 6px 15px rgba(255, 77, 136, 0.4);
+    padding: 22px 45px; /* lebih besar */
+    font-size: 26px;   /* tulisan lebih besar */
+    border-radius: 60px; /* lebih lucu dan bulat */
+}
+
+#btn-gift:hover {
+    transform: scale(1.1);
+}
+
+#secret-message {
+    display: none;
+    margin-top: 20px;
+    animation: popIn 0.5s ease;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.6); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.wish-box {
+    background-color: #fff7ff;
+    border: 3px dashed #ff9ac2;
+    padding: 25px;
+    border-radius: 20px;
+    margin-top: 15px;
+    color: #333;
+    font-size: 1.3em;
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 5px #ffb3d9; }
+    to { box-shadow: 0 0 15px #ff99cc; }
+}
+
+.emoji { font-size: 3.5em; animation: bounce 1.5s infinite; }
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Cute CSS Cake */
+.cake {
+    width: 180px;
+    height: 150px;
+    background: #ffb3d9;
+    margin: 0 auto;
+    border-radius: 15px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    animation: popIn .8s ease;
+}
+
+.cake::before {
+    content: "";
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 40px;
+    background: #ffe6e6;
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
+
+.candle-flame {
+    width: 18px;
+    height: 25px;
+    background: #ffdd55;
+    border-radius: 50%;
+    position: absolute;
+    top: -55px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: flicker .6s infinite alternate;
+}
+
+@keyframes flicker {
+    from { transform: translateX(-50%) scale(1); }
+    to { transform: translateX(-50%) scale(1.2); }
+}
+</style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div class="card">
+        <div class="emoji">🎂🥳</div>
+        <h1>Happy Birthday, Bubby!</h1>
+        <p class="intro">Ciyeee udah 18 tahun ni yee. Udah legal! 😜</p>
+        <div id="initial-view">
+            <p>Aku punya hadiah spesial buat kamu. Klik tombol di bawah ya!</p>
+            <button id="btn-gift" onmouseover="runAway()" onclick="openGift()">🎁 Buka Kado</button>
+        </div>
+        <div id="secret-message">
+            <h2>YEAY BERHASIL! 🎉</h2>
+            <p>Selamat ya udah gak kena prank lagi wkwk.</p>
+            <div class="wish-box">
+                <h3>Harapanku buat kamu:</h3>
+                <p>Semoga panjang umur...sehatt selaluu...buat banggaa mamaa papaa...masukk ptn yangg bubbyy impikannn daann yang terpentingggg samaa akuuu terussss </p>
+                <p><b>I Love You! ❤️</b></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        let attempt = 0;
+        const btnGift = document.getElementById('btn-gift');
+        const initialView = document.getElementById('initial-view');
+        const secretMessage = document.getElementById('secret-message');
+        function runAway() {
+            if (attempt < 5) {
+                const x = Math.random() * (window.innerWidth - 200);
+                const y = Math.random() * (window.innerHeight - 200);
+                btnGift.style.position = 'fixed';
+                btnGift.style.left = x + 'px';
+                btnGift.style.top = y + 'px';
+                attempt++;
+            }
+        }
+        function openGift() {
+            initialView.style.display = 'none';
+            secretMessage.style.display = 'block';
+            fireConfetti();
+            let end = Date.now() + 3000;
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }});
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }});
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+        }
+        function fireConfetti() {
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }});
+        }
+    </script>
+</body>
+</html>
